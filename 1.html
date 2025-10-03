@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 20px;
+            background: #0c0c0c;
+        }
+
+        img {
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .img2 {
+            width: 180px;
+            display: flex;
+
+            margin-top: 10px;
+        }
+
+        h1 {
+            color: orange;
+            text-align: center;
+            display: flex;
+        }
+
+        .all {
+            width: 800px;
+            margin: 40px auto;
+            color: white;
+        }
+
+        #searchBox {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #searchBtn {
+            padding: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        #one {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(131, 129, 129, 0.1);
+
+        }
+
+        .sub-container {
+            width: 160px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 20px;
+            background: white;
+            color: black;
+        }
+
+        button {
+            background-color: orange;
+            color: white;
+            border-color: orange;
+        }
+
+        button:hover {
+            color: white;
+            background-color: rgb(247, 179, 53);
+        }
+
+        .ing {
+            display: flex;
+            justify-content: center;
+            column-gap: 8px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .mes {
+            display: flex;
+            flex-direction: column;
+            column-gap: 8px;
+            justify-content: space-between;
+            margin: auto;
+            padding: 50px;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .nav-search {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-search input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 200px;
+        }
+
+        .nav-search button {
+            padding: 8px 12px;
+            background-color: orange;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .nav-search button:hover {
+            background-color: rgb(247, 179, 53);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background-color: #e67e22;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-logo">🍴 Recipe Finder</div>
+        <div class="nav-search">
+            <input type="text" id="searchInput" placeholder="Search by dish name...">
+            <button id="searchBtn">Search</button>
+        </div>
+        <ul class="nav-links">
+            <li><a href="1.html">Home</a></li>
+            <li><a href="login1.html">Login</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="one"></div>
+    <script>
+
+        async function getData(query = "") {
+            let rawData = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
+            let data = await rawData.json()
+            console.log("Full data", data);
+
+            document.getElementById("one").innerHTML = "";
+
+            if (data.meals) {
+                data.meals.forEach(meal => {
+                    document.getElementById("one").innerHTML += `
+                <div class="sub-container">
+                    <img src="${meal.strMealThumb}" alt="">
+                    <h2>${meal.strMeal}</h2>
+                    <h4>Cuisine: ${meal.strArea}</h4>
+                    <h4>Category: ${meal.strCategory}</h4>
+                    <button onclick="getSingleProduct(${meal.idMeal})">View</button>
+                </div>
+                `
+                });
+            } else {
+                document.getElementById("one").innerHTML = "<h3>No recipes found ❌</h3>";
+            }
+        }
+
+        getData();
+
+        async function getSingleProduct(a) {
+            let rawData = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${a}`)
+            let data = await rawData.json()
+            let meal = data.meals[0];
+            console.log("Single data", meal);
+
+            let ingredients = "";
+            let measures = "";
+
+            for (let i = 1; i <= 20; i++) {
+                if (meal[`strIngredient${i}`]) {
+                    ingredients += `<li>${meal[`strIngredient${i}`]}</li>`;
+                    measures += `<li>${meal[`strMeasure${i}`]}</li>`;
+                }
+            }
+
+            document.getElementById("one").innerHTML = `
+    <div class="all"> 
+        <div class="container"> 
+            <img src="${meal.strMealThumb}" class="img2" alt="">
+            <h1>${meal.strMeal}</h1>
+            <div style="display:flex; gap:50px;">
+                <div>
+                    <h2>Ingredients:</h2>      
+                    <ul>${ingredients}</ul>
+                </div>
+                <div>
+                    <h2>Measurements:</h2>
+                    <ul>${measures}</ul>
+                </div>
+            </div>
+
+            <h3>Instruction:</h3>
+            <p>${meal.strInstructions}</p>
+            
+            ${meal.strYoutube ? `<a href="${meal.strYoutube}" target="_blank">📺 Watch Recipe Video</a>` : ""}
+        </div>
+    </div>`;
+        }
+
+        document.getElementById("searchBtn").addEventListener("click", () => {
+            let query = document.getElementById("searchInput").value;
+            getData(query);
+        });
+
+
+        document.getElementById("searchInput").addEventListener("keypress", (e) => {
+            if (e.key == "Enter") {
+                document.getElementById("searchBtn").click();
+            }
+        });
+
+    </script>
+</body>
+
+</html>

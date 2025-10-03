@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-image: url("loginbc2.jpg");
+        }
+
+        .all {
+
+            text-align: center;
+            padding: 10PX;
+            margin: 20px auto;
+            border-color: black;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .img {
+            height: 320px;
+            width: 320px;
+            border-radius: 550px;
+            margin: 45px;
+        }
+
+        .header {
+            font-family: 'Times New Roman', Times, serif;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .font {
+            margin: 10px;
+            display: inline-block;
+            align-items: center;
+            margin-left: 1px;
+            padding: 2px;
+        }
+
+        button {
+
+            background-color: black;
+            height: 30px;
+            width: 70px;
+            border: black;
+            color: white;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: medium;
+            font-style: italic;
+            cursor: pointer;
+
+        }
+
+        button:hover {
+            background-color: rgb(54, 53, 53);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="all">
+        <div class="header">
+            <img src="food.jpg" class="img">
+            <div class="font">
+                <h1>Find your Perfect Recipe🔍</h1>
+
+                <h3 style="color: rgb(99, 58, 4);"> Your recipe adventure begins now!</h3>
+                <button onclick="view()">View </button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function view() {
+        window.location = "./login1.html"
+    }
+</script>
+
+</html>
